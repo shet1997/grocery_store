@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 toast.configure()  
@@ -8,6 +8,15 @@ function Grocery() {
     let textInput = React.createRef();
     const [groceryItem, setGroceryItem] = useState([]);
     const [editGroceryItemId, setEditGroceryItemId] = useState(null);
+    var x = document.getElementById("edit");
+    var y = document.getElementById("submit");
+
+    useEffect(() => {
+        var x = document.getElementById("edit");
+        var y = document.getElementById("submit");
+        x.style.display = 'none';
+        y.style.display = 'block';
+    }, []);
 
     const handleSubmit = () => {
             setGroceryItem([
@@ -20,7 +29,6 @@ function Grocery() {
             textInput.current.value = '';
             toast.success('item added successfully');
         } 
-
 
     const handleDelete = (itemId) => {
         const deletingItems = [...groceryItem];
@@ -36,12 +44,16 @@ function Grocery() {
         updatingItems[index].name = textInput.current.value;
         setGroceryItem(updatingItems);
         textInput.current.value = '';
+        x.style.display = 'none';
+        y.style.display = 'block';
         toast.info("updated successfully");
     }
 
     const handleEdit = (itemId) => {
         textInput.current.value = groceryItem[itemId].name;
         setEditGroceryItemId(itemId);
+        x.style.display = 'block';
+        y.style.display = 'none';
     }
 
 
@@ -53,8 +65,8 @@ function Grocery() {
                         <h3 className="grocery_title">Grocery Bud</h3>
                         <div className="d-flex justify-content-center">
                             <input type="text" className="grocery_input" placeholder="e.g eggs" ref={textInput} />
-                            <button className="submit_btn" onClick={handleSubmit}>Submit</button>
-                            <button className="submit_btn" onClick={handleUpdate}>Edit</button>
+                            <button className="submit_btn" id="submit" onClick={handleSubmit}>Submit</button>
+                            <button className="submit_btn" id="edit" onClick={handleUpdate}>Edit</button>
                         </div>
                         <div className="list_items">
                             {groceryItem.map(item => (
